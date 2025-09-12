@@ -28,10 +28,7 @@ export default function Footer() {
                     <p>
                         ©2025 UDINNA. All rights reserved.
                     </p>
-                    <div className={style.footerTandCs}>
-                        <a href="/terms">Terms of Service</a>
-                        <a href="/privacy">Privacy Policy</a>
-                    </div>
+
                     <div className={style.footerSocials}>
                         <a href="">
                             <img src={ig} alt="" />
