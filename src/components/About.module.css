@@ -1,0 +1,135 @@
+.aboutSection {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 1.5rem;
+    padding: 7.5rem 12.5rem 5rem;
+    margin-top: 7rem;
+}
+
+.uLogo {
+    height: 8.75rem;
+    width: auto;
+}
+
+.aboutText {
+    font-size: 4rem;
+}
+
+/* The reveal mask: let the span clip its own content */
+.reveal {
+    display: inline-block;
+    overflow: hidden;
+    white-space: normal;
+    will-change: width;
+}
+
+/* Optional caret for the type effect. */
+.typing::after {
+    content: " ";
+    display: inline-block;
+    width: 0.06em;
+    height: 0.9em;
+    margin-left: 0.06em;
+    background: currentColor;
+    vertical-align: -0.05em;
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink { 
+    50% { opacity: 0; }
+}
+
+/* Large desktop */
+@media (max-width: 1400px) {
+    .aboutSection {
+        padding: 6rem 8rem 4rem;
+    }
+    
+    .aboutText {
+        font-size: 3.5rem;
+    }
+    
+    .uLogo {
+        height: 7.5rem;
+    }
+}
+
+/* Desktop */
+@media (max-width: 1200px) {
+    .aboutSection {
+        padding: 5rem 6rem 3.5rem;
+        margin-top: 5rem;
+    }
+    
+    .aboutText {
+        font-size: 3rem;
+    }
+    
+    .uLogo {
+        height: 6.5rem;
+    }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .aboutSection {
+        padding: 4rem 3rem 3rem;
+        margin-top: 4rem;
+        gap: 2rem;
+    }
+    
+    .aboutText {
+        font-size: 2.5rem;
+        line-height: 1.3;
+    }
+    
+    .uLogo {
+        height: 5.5rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .aboutSection {
+        padding: 3rem 1.5rem 2.5rem;
+        margin-top: 3rem;
+        gap: 1.5rem;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .aboutText {
+        font-size: 2rem;
+        line-height: 1.3;
+    }
+    
+    .uLogo {
+        height: 4.5rem;
+    }
+}
+
+/* Small mobile */
+@media (max-width: 480px) {
+    .aboutSection {
+        padding: 1.5rem 1rem 2rem;
+        margin-top: 2rem;
+        gap: 1.25rem;
+    }
+    
+    .aboutText {
+        font-size: 1.5rem;
+        line-height: 1.4;
+    }
+    
+    .uLogo {
+        height: 3.5rem;
+    }
+    
+    /* Adjust typing caret for smaller text */
+    .typing::after {
+        width: 0.08em;
+        height: 0.9em;
+        margin-left: 0.08em;
+    }
+}
