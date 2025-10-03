@@ -1,4 +1,5 @@
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
@@ -11,9 +12,34 @@ export default function Navigation() {
     const navRef = useRef(null);
     const mobileMenuRef = useRef(null);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+    
+    // Check if we're on the home page
+    const isHomePage = location.pathname === '/';
     
     // Store animation functions in refs so they persist
     const mobileMenuAnimations = useRef(null);
+
+    // Handle hash navigation after page load
+    useEffect(() => {
+        if (location.hash) {
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+                
+                const element = document.querySelector(location.hash);
+                if (element) {
+                    const navHeight = navRef.current?.offsetHeight || 0;
+                    const offsetPosition = element.offsetTop - navHeight - 20;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 300);
+        }
+    }, [location]);
 
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
@@ -107,7 +133,6 @@ export default function Navigation() {
     }, []);
 
     // Handle menu state changes
-    // Handle menu state changes
     useLayoutEffect(() => {
         if (mobileMenuAnimations.current) {
             if (isMenuOpen) {
@@ -145,10 +170,33 @@ export default function Navigation() {
         setIsMenuOpen(false);
     };
 
+    // Handle navigation with hash
+    const handleNavClick = (e, hash) => {
+        e.preventDefault();
+        closeMenu();
+        
+        if (isHomePage) {
+            // Already on home page, just scroll
+            const element = document.querySelector(hash);
+            if (element) {
+                const navHeight = navRef.current?.offsetHeight || 0;
+                const offsetPosition = element.offsetTop - navHeight - 20;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        } else {
+            // Navigate to home page with hash
+            navigate(`/${hash}`);
+        }
+    };
+
     return (
         <>
             <nav className={style.nav} ref={navRef} data-nav>
-                <a href="#" className={style.logo}>
+                <a href="/" className={style.logo}>
                     <img src={udinna} alt="home" />
                 </a>
                 
@@ -158,6 +206,7 @@ export default function Navigation() {
                         <a 
                             href="#what-we-do"
                             className={style.navLink}
+                            onClick={(e) => handleNavClick(e, '#what-we-do')}
                         >
                             What We Do
                         </a>
@@ -166,6 +215,7 @@ export default function Navigation() {
                         <a 
                             href="#work"
                             className={style.navLink}
+                            onClick={(e) => handleNavClick(e, '#work')}
                         >
                             Our Past Work
                         </a>
@@ -174,8 +224,10 @@ export default function Navigation() {
 
                 {/* Desktop CTA button */}
                 <a 
-                    href="calendly-link-goes-here"
+                    href="https://calendly.com/udinnadrive/30min"
                     className={`btn-small btn-pry ${style.desktopCTA}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
                     <p>Book a Call</p>
                     <img src={rightArrow} alt="" />
@@ -207,7 +259,7 @@ export default function Navigation() {
                             <a 
                                 href="#what-we-do"
                                 className={style.mobileNavLink}
-                                onClick={closeMenu}
+                                onClick={(e) => handleNavClick(e, '#what-we-do')}
                             >
                                 What We Do
                             </a>
@@ -216,7 +268,7 @@ export default function Navigation() {
                             <a 
                                 href="#work"
                                 className={style.mobileNavLink}
-                                onClick={closeMenu}
+                                onClick={(e) => handleNavClick(e, '#work')}
                             >
                                 Our Past Work
                             </a>
@@ -224,9 +276,11 @@ export default function Navigation() {
                     </ul>
                     
                     <a 
-                        href="calendly-link-goes-here"
+                        href="https://calendly.com/udinnadrive/30min"
                         className={`btn btn-pry ${style.mobileCTA}`}
                         onClick={closeMenu}
+                        target="_blank"
+                        rel="noopener noreferrer"
                     >
                         <p>Book a Call</p>
                         <img src={rightArrow} alt="" />

@@ -167,8 +167,10 @@ export default function Hero() {
             <div className={style.heroText}>
                 <h1>Crafting dream brands and digital experiences</h1>
                 <a 
-                    href="calendly-link-goes-here"
+                    href="https://calendly.com/udinnadrive/30min"
                     className="btn btn-pry"
+                    target="_blank"
+                    rel="noopener noreferrer"
                 >
                     <p>Get Started</p>
                     <img src={rightArrow} alt="" />

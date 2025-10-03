@@ -9,7 +9,8 @@ export default function HomePage() {
     return (
         <>
             <Helmet>
-                
+                <title>Udinna Digital - Crafting dream brands and digital experiences</title>
+                <meta name="description" content="A Lagos-based marketing, product design, and software development firm dedicated to building bold brand identities and digital experiences." />
             </Helmet>
             <div className="app-wrapper">
                 <Navigation />

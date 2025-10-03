@@ -62,7 +62,7 @@ export default function About() {
 
 
     return (
-        <section className={style.aboutSection} ref={sectionRef}>
+        <section className={style.aboutSection} ref={sectionRef} id="what-we-do">
             <img src={uLogo} alt="" className={style.uLogo} ref={imgRef}/>
             <p
                 className={style.aboutText}

@@ -56,7 +56,7 @@ export default function Project() {
 
       
     return (
-        <section className={style.projectSection} ref={sectionRef}>
+        <section className={style.projectSection} ref={sectionRef} id="work">
             {/* watermark behind */}
             <div className={style.watermark}>
                 <img src={project} alt="Projects" />    
@@ -64,7 +64,7 @@ export default function Project() {
 
             <div className={style.grid} ref={gridRef}>
                 {/* ODS */}
-                <a href="#" className={`${style.card} ${style.cardOds} ${style.span12}`} aria-label="Onedrugstore">
+                <a href="/projects/one-drug-store" className={`${style.card} ${style.cardOds} ${style.span12}`} aria-label="Onedrugstore">
                     <img src={ods} alt="Onedrugstore" className={style.cover}/>
 
                     {/* Overlay panel */}
@@ -72,7 +72,7 @@ export default function Project() {
                         <div className={style.overlayContent}>
                             <div className={style.overlayContentTitle}>
                                 <h3 className={style.headline}>
-                                    Bringing OneDrugStore to life
+                                Onedrugstore: Pharmatech for Fast Access
                                 </h3>
                                 <span className={style.tags}>PRODUCT DESIGN</span>
                             </div>
@@ -87,15 +87,15 @@ export default function Project() {
                 </a>
 
                 {/* Row 2 */}
-                <a href="#" className={`${style.card} ${style.span7}`} aria-label="Washryte">
+                <a href="/projects/washryte" className={`${style.card} ${style.span7}`} aria-label="Washryte">
                     <img src={washryte} alt="Washryte" className={style.cover}/>
                     <div className={style.overlayPanel}>
                         <div className={style.overlayContent}>
                             <div className={style.overlayContentTitle}>
                                 <h3 className={style.headline}>
-                                    Growing Washryte's social media
+                                Washryte Laundromat – Digital Growth Engine
                                 </h3>
-                                <span className={style.tags}>SOCIAL MEDIA MARKETING</span>
+                                <span className={style.tags}>SOCIAL MEDIA</span>
                             </div>
                             
                             <div className={style.bottomRow}>
@@ -107,15 +107,15 @@ export default function Project() {
                     </div>
                 </a>
                 
-                <a href="#" className={`${style.card} ${style.span5}`} aria-label="Frutta">
+                <a href="/projects/frutta" className={`${style.card} ${style.span5}`} aria-label="Frutta">
                     <img src={frutta} alt="Frutta" className={style.cover}/>
                     <div className={style.overlayPanel}>
                         <div className={style.overlayContent}>
                             <div className={style.overlayContentTitle}>
                                 <h3 className={style.headline}>
-                                    Frutta's Social Media Levels Up
+                                Frutta Juice – From Zero to Digital Hero
                                 </h3>
-                                <span className={style.tags}>SOCIAL MEDIA MARKETING, CAMPAIGNS</span>
+                                <span className={style.tags}>SOCIAL MEDIA, CAMPAIGNS</span>
                             </div>
                             
                             <div className={style.bottomRow}>
@@ -128,13 +128,13 @@ export default function Project() {
                 </a>
 
                 {/* Healthbanc wide strip */}
-                <a href="#" className={`${style.card} ${style.cardHb} ${style.span12}`} aria-label="Healthbanc">
+                <a href="/projects/healthbanc" className={`${style.card} ${style.cardHb} ${style.span12}`} aria-label="Healthbanc">
                     <img src={healthbanc} alt="Healthbanc" className={style.cover}/>
                     <div className={style.overlayPanel}>
                         <div className={style.overlayContent}>
                             <div className={style.overlayContentTitle}>
                                 <h3 className={style.headline}>
-                                    Healthbanc comes to life
+                                Healthbanc – Healthy Lifestyle Ecosystem
                                 </h3>
                                 <span className={style.tags}>PRODUCT DESIGN</span>
                             </div>
@@ -149,13 +149,13 @@ export default function Project() {
                 </a>
 
                 {/* Row 4 */}
-                <a href="#" className={`${style.card} ${style.span5}`} aria-label="LandGirl">
+                <a href="/projects/landgirl" className={`${style.card} ${style.span5}`} aria-label="LandGirl">
                     <img src={landgal} alt="LandGirl" className={style.cover}/>
                     <div className={style.overlayPanel}>
                         <div className={style.overlayContent}>
                             <div className={style.overlayContentTitle}>
                                 <h3 className={style.headline}>
-                                    LandGirl's Brand Comes Alive
+                                LandGirl – Real Estate with Impact
                                 </h3>
                                 <span className={style.tags}>BRAND IDENTITY</span>
                             </div>
@@ -169,13 +169,13 @@ export default function Project() {
                     </div>
                 </a>
                 
-                <a href="#" className={`${style.card} ${style.span7}`} aria-label="Delight Vet">
+                <a href="/projects/delight-vet" className={`${style.card} ${style.span7}`} aria-label="Delight Vet">
                     <img src={delightvet} alt="DelightVet" className={style.cover}/>
                     <div className={style.overlayPanel}>
                         <div className={style.overlayContent}>
                             <div className={style.overlayContentTitle}>
                                 <h3 className={style.headline}>
-                                   Delight Vet - Branding a veterinarian
+                                Delight Vet – Modern Veterinary Identity
                                 </h3>
                                 <span className={style.tags}>BRAND IDENTITY</span>
                             </div>

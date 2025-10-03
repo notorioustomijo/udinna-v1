@@ -13,7 +13,12 @@ export default function Footer() {
                     Partner with a creative team designed to move at your speed, 
                     surpass your expectations, and turn your vision into reality.
                 </p>
-                <a href="calendly" className={style.footerCTA}>
+                <a 
+                    href="https://calendly.com/udinnadrive/30min" 
+                    className={style.footerCTA}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <div className={style.btnHeader}>
                         <p>Book a Call</p>
                         <img src={rightArrow} alt="" />
@@ -30,10 +35,18 @@ export default function Footer() {
                     </p>
 
                     <div className={style.footerSocials}>
-                        <a href="">
+                        <a 
+                            href="https://www.instagram.com/udinna.africa/"
+                            target="blank"
+                            rel="noopener noreferrer"
+                        >
                             <img src={ig} alt="" />
                         </a>
-                        <a href="">
+                        <a 
+                            href="https://www.linkedin.com/company/udinna/posts/?feedView=all"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
                             <img src={linkedin} alt="" />
                         </a>
                     </div>
