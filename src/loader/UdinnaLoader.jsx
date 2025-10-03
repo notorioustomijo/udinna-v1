@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './UdinnaLoader.module.css';
 
-export default function UdinnaLoader() {
-  const [isLoading, setIsLoading] = useState(true);
+export default function UdinnaLoader({ onComplete }) {
   const [displayText, setDisplayText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const fullText = 'UDINNA';
@@ -18,19 +17,22 @@ export default function UdinnaLoader() {
         clearInterval(typingInterval);
         setTimeout(() => {
           setShowCursor(false);
-          setTimeout(() => setIsLoading(false), 300);
+          setTimeout(() => {
+            // Call the onComplete callback to notify parent
+            if (onComplete) {
+              onComplete();
+            }
+          }, 300);
         }, 800);
       }
     }, 150);
 
     return () => clearInterval(typingInterval);
-  }, []);
-
-  if (!isLoading) return null;
+  }, [onComplete]);
 
   return (
     <div 
-      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-opacity duration-500 ${styles.loader} ${!isLoading ? 'opacity-0' : 'opacity-100'}`}
+      className={`fixed inset-0 z-[9999] flex flex-col items-center justify-center transition-opacity duration-500 ${styles.loader}`}
     >
       <div className="relative flex items-center justify-center">
         <h1 className={styles.title}>

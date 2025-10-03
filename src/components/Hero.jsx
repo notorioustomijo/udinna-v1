@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useEffect } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
@@ -18,88 +18,48 @@ import delightvet from '../assets/delightvet-post.webp';
 
 import style from './Hero.module.css';
 
-export default function Hero({ onImagesLoaded }) {
+export default function Hero() {
     const sectionRef = useRef(null);
     const trackRef = useRef(null);
+
+    // brands marquee
     const brandsWrapRef = useRef(null);
     const brandsTrackRef = useRef(null);
 
-    // Track image loading
-    useEffect(() => {
-        const brandImages = brandsTrackRef.current?.querySelectorAll('img') || [];
-        const heroImages = trackRef.current?.querySelectorAll('img') || [];
-        const allImages = [...brandImages, ...heroImages];
-
-        // Check if all images are already loaded
-        const allLoaded = allImages.every(img => img.complete && img.naturalWidth > 0);
-
-        if (allLoaded) {
-            onImagesLoaded();
-            return;
-        }
-
-        // Add load event listeners for images that aren't loaded yet
-        let loadedCount = 0;
-        const totalImages = allImages.length;
-
-        const handleImageLoad = () => {
-            loadedCount += 1;
-            if (loadedCount === totalImages) {
-                onImagesLoaded();
-            }
-        };
-
-        allImages.forEach(img => {
-            if (!img.complete || img.naturalWidth === 0) {
-                img.addEventListener('load', handleImageLoad);
-                img.addEventListener('error', handleImageLoad); // Count errored images as "loaded" to avoid hanging
-            } else {
-                loadedCount += 1;
-            }
-        });
-
-        // Initial check in case some images load before listeners are attached
-        if (loadedCount === totalImages) {
-            onImagesLoaded();
-        }
-
-        // Cleanup
-        return () => {
-            allImages.forEach(img => {
-                img.removeEventListener('load', handleImageLoad);
-                img.removeEventListener('error', handleImageLoad);
-            });
-        };
-    }, [onImagesLoaded]);
-
     useLayoutEffect(() => {
         const ctx = gsap.context(() => {
+            // How far we can safely shift left ( no overshoot )
             const maxShift = () => {
                 const track = trackRef.current;
                 const wrap = track.parentElement;
                 const diff = track.scrollWidth - wrap.clientWidth;
+                // Slight movement even if row fits; cap at 180px
                 return -Math.min(15000, Math.max(60, diff * 0.5));
             };
 
+            // Move the strip up to 140px left across the LAST 40% of the page scroll
             gsap.to(trackRef.current, {
                 x: maxShift,
                 ease: "none",
                 scrollTrigger: {
-                    start: 0,
-                    end: "max",
+                    start: 0, //top of page
+                    end: "max", // bottom of page
                     scrub: true,
                     invalidateOnRefresh: true,
                 },
             });
 
+            // ---- BRANDS MARQUEE ---
             const wrap = brandsWrapRef.current;
             const track = brandsTrackRef.current;
 
             let cleanup;
 
             const buildMarquee = () => {
+                // remove old clones if any
                 [...track.querySelectorAll('[data-clone]')].forEach(n => n.remove());
 
+                // clone one full set to allow seamless wrap-around
                 const originalItems = [...track.children];
                 originalItems.forEach(el => {
                     const clone = el.cloneNode(true);
@@ -108,14 +68,17 @@ export default function Hero({ onImagesLoaded }) {
                     track.appendChild(clone);
                 });
 
+                // wait a frame so layout settles, then measure
                 let tween;
 
                 const init = () => {
+                    // width of TWO sets (because we just cloned once)
                     const total = track.scrollWidth;
-                    const wrapWidth = total / 2;
+                    const wrapWidth = total / 2; //< - key: exact one-set weidth
 
                     gsap.set(track, { x: 0, force3D: true });
 
+                    // constant pixels-per-second speed
                     const speed = 70;
                     const dur = wrapWidth / speed;
 
@@ -126,10 +89,11 @@ export default function Hero({ onImagesLoaded }) {
                         repeat: -1,
                         onUpdate() {
                             const x = gsap.getProperty(track, "x");
-                            if (x <= -wrapWidth) gsap.set(track, { x: x + wrapWidth });
+                            if (x <= -wrapWidth ) gsap.set(track, { x: x + wrapWidth });
                         }
                     });
 
+                    // pause on hover
                     const onEnter = () => tween.pause();
                     const onLeave = () => tween.play();
                     wrap.addEventListener('mouseenter', onEnter);
@@ -142,6 +106,7 @@ export default function Hero({ onImagesLoaded }) {
                     };
                 };
 
+                // if images aren't loaded yet, wait for them
                 const imgs = [...track.querySelectorAll('img')];
                 const allLoaded = imgs.every(i => i.complete && i.naturalWidth);
                 if (allLoaded) {
@@ -159,22 +124,25 @@ export default function Hero({ onImagesLoaded }) {
 
             buildMarquee();
 
+            // build now and on refresh/resize
             const onRefresh = () => {
                 cleanup?.();
                 buildMarquee();
             };
             ScrollTrigger.addEventListener('refreshInit', onRefresh);
 
+            // reduced motion
             if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                 cleanup?.();
             }
 
+            // cleanup
             return () => {
                 cleanup?.();
                 ScrollTrigger.removeEventListener('refreshInit', onRefresh);
             };
         }, sectionRef);
-
+        
         return () => ctx.revert();
     }, []);
 
@@ -182,20 +150,23 @@ export default function Hero({ onImagesLoaded }) {
         <section className={style.heroSection} ref={sectionRef}>
             <div className={style.trustSignal}>
                 <p>Trusted by:</p>
+
+                {/* marquee viewport */}
                 <div className={style.brandViewport} ref={brandsWrapRef}>
                     <div className={style.brandTrack} ref={brandsTrackRef}>
-                        <img src={sterling} alt="Sterling" className={style.brandLogo} />
-                        <img src={frutta} alt="Frutta" className={style.brandLogo} />
-                        <img src={washryteSmall} alt="Washryte" className={style.brandLogo} />
-                        <img src={delightSmall} alt="Delight Vet" className={style.brandLogo} />
-                        <img src={skydd} alt="Skydd" className={style.brandLogo} />
-                        <img src={landGirl} alt="LandGirl" className={style.brandLogo} />
+                        <img src={sterling} alt="Sterling" className={style.brandLogo}/>
+                        <img src={frutta} alt="Frutta" className={style.brandLogo}/>
+                        <img src={washryteSmall} alt="Washryte" className={style.brandLogo}/>
+                        <img src={delightSmall} alt="Delight Vet" className={style.brandLogo}/>
+                        <img src={skydd} alt="Skydd" className={style.brandLogo}/>
+                        <img src={landGirl} alt="LandGirl" className={style.brandLogo}/>
                     </div>
                 </div>
             </div>
+
             <div className={style.heroText}>
                 <h1>Crafting dream brands and digital experiences</h1>
-                <a
+                <a 
                     href="https://calendly.com/udinnadrive/30min"
                     className="btn btn-pry"
                     target="_blank"
@@ -205,15 +176,17 @@ export default function Hero({ onImagesLoaded }) {
                     <img src={rightArrow} alt="" />
                 </a>
             </div>
+
+            {/* Image strip */}
             <div className={style.heroStrip}>
                 <div className={style.heroTrack} ref={trackRef}>
-                    <img src={landGirlflyer} alt="" className={style.heroImage} />
-                    <img src={ceegold} alt="" className={style.heroImage} />
-                    <img src={washryteflyer} alt="" className={style.heroImage} />
-                    <img src={fruttapost} alt="" className={style.heroImage} />
-                    <img src={delightvet} alt="" className={style.heroImage} />
+                    <img src={landGirlflyer} alt="" className={style.heroImage}/>
+                    <img src={ceegold} alt="" className={style.heroImage}/>
+                    <img src={washryteflyer} alt="" className={style.heroImage}/>
+                    <img src={fruttapost} alt="" className={style.heroImage}/>
+                    <img src={delightvet} alt="" className={style.heroImage}/>
                 </div>
             </div>
         </section>
-    );
+    )
 }

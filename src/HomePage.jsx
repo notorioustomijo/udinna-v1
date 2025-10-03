@@ -1,5 +1,5 @@
 import { Helmet } from '@dr.pogodin/react-helmet';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navigation from "./components/Navigation";
 import Hero from './components/Hero';
 import About from './components/About';
@@ -8,10 +8,21 @@ import Footer from './components/Footer';
 import UdinnaLoader from './loader/UdinnaLoader';
 
 export default function HomePage() {
-    const [imagesLoaded, setImagesLoaded] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [showContent, setShowContent] = useState(false);
 
-    const handleImagesLoaded = () => {
-        setImagesLoaded(true);
+    useEffect(() => {
+        const hasSeenLoader = sessionStorage.getItem('hasSeenLoader');
+        if (hasSeenLoader) {
+            setIsLoading(false);
+            setShowContent(true);
+        }
+    }, []);
+
+    const handleLoaderComplete = () => {
+        sessionStorage.setItem('hasSeenLoader', 'true');
+        setIsLoading(false);
+        setTimeout(() => setShowContent(true), 500);
     };
 
     return (
@@ -20,14 +31,14 @@ export default function HomePage() {
                 <title>Udinna Digital - Crafting dream brands and digital experiences</title>
                 <meta name="description" content="A Lagos-based marketing, product design, and software development firm dedicated to building bold brand identities and digital experiences." />
             </Helmet>
-            <UdinnaLoader />
-            <div className="app-wrapper" style={{ display: imagesLoaded ? 'block' : 'none' }}>
+            {isLoading && <UdinnaLoader onComplete={handleLoaderComplete} />}
+            {showContent && <div className="app-wrapper">
                 <Navigation />
-                <Hero onImagesLoaded={handleImagesLoaded} />
+                <Hero />
                 <About />
                 <Project />
                 <Footer />
-            </div>
+            </div>}
         </>
     );
 }
